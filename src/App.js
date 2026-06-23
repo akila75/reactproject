@@ -1,23 +1,14 @@
 import React, { useState } from "react";
-import "./App.css";
 
 function App() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   const [participants, setParticipants] = useState([]);
   const [message, setMessage] = useState("");
 
-  const register = (e) => {
-    e.preventDefault();
-
-    if (!name || !email || !phone) {
-      setMessage("Please fill all fields.");
-      return;
-    }
-
+  const handleRegister = () => {
     const exists = participants.find(
-      (p) => p.email.toLowerCase() === email.toLowerCase()
+      (participant) => participant.email === email
     );
 
     if (exists) {
@@ -25,55 +16,46 @@ function App() {
       return;
     }
 
-    const newParticipant = { name, email, phone };
+    const newParticipant = { name, email };
 
     setParticipants([...participants, newParticipant]);
     setMessage("Registration Successful!");
 
     setName("");
     setEmail("");
-    setPhone("");
   };
 
   return (
-    <div className="container">
+    <div style={{ padding: "20px" }}>
       <h1>Workshop Registration</h1>
 
-      <form onSubmit={register}>
-        <input
-          type="text"
-          placeholder="Enter Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+      <input
+        type="text"
+        placeholder="Enter Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <br /><br />
 
-        <input
-          type="email"
-          placeholder="Enter Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+      <input
+        type="email"
+        placeholder="Enter Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <br /><br />
 
-        <input
-          type="text"
-          placeholder="Enter Phone Number"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
+      <button onClick={handleRegister}>
+        Register
+      </button>
 
-        <button type="submit">Register</button>
-      </form>
+      <h3>{message}</h3>
 
-      <p>{message}</p>
-
-      <h2>Registered Participants</h2>
-
+      <h2>Participants List</h2>
       <ul>
-        {participants.map((p, index) => (
+        {participants.map((participant, index) => (
           <li key={index}>
-            <strong>{p.name}</strong><br />
-            {p.email}<br />
-            {p.phone}
+            {participant.name} - {participant.email}
           </li>
         ))}
       </ul>
